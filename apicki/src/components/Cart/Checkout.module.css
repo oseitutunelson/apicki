@@ -1,0 +1,98 @@
+.checkoutContainer {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #fff;
+  overflow: auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.control {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.control label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.control input,
+.control textarea {
+  font: inherit;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+.error {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.cancelButton {
+  background-color: #ccc;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+
+.cancelButton:hover,
+.cancelButton:active {
+  background-color: #bbb;
+}
+
+.confirmButton {
+  background-color: #4caf50;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.confirmButton:hover,
+.confirmButton:active {
+  background-color: #45a049;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .checkoutContainer {
+    max-width: 90%;
+    margin: 1rem auto;
+    padding: 1rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cancelButton,
+  .confirmButton {
+    width: 100%;
+    padding: 1rem;
+  }
+}
+  
