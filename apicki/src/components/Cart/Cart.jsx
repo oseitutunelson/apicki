@@ -14,7 +14,7 @@ const Cart = (props) => {
 
   const cartContext = useContext(CartContext);
 
-  const totalAmount = `$${cartContext.totalAmount.toFixed(2)}`;
+  const totalAmount = `₵${cartContext.totalAmount.toFixed(2)}`;
   const hasItems = cartContext.items.length > 0;
 
   const cartItemRemoveHadler = (id) => {
@@ -35,7 +35,7 @@ const Cart = (props) => {
       .insert([
         {
           user_data: userData,
-          order_items: cartContext.items,
+          orderitems: cartContext.items,
           status: "pending",
           created_at: new Date(),
         },

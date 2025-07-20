@@ -6,6 +6,8 @@ import Login from "./components/Login";
 import { supabase } from "./supabase";
 import PrivateRoute from "./components/PrivateRoute";
 import Cart from "./components/Cart/Cart";
+import AdminOrders from "./components/AdminOrders";
+
 
 function AppRoutes() {
   const [session, setSession] = useState(null);
@@ -38,6 +40,8 @@ function AppRoutes() {
             </PrivateRoute>
           }
         />
+                <Route path="/admin" element={<AdminOrders />} />
+
       </Routes>
     </Router>
   );
