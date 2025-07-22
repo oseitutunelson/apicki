@@ -45,20 +45,25 @@ const Cart = (props) => {
       setIsSubmiting(false);
       return;
     }
-    // Send SMS notification to admin
+    // Send SMS notification to admin using Textbelt API from frontend
     try {
       const adminPhoneNumber = "+233202270671"; // Replace with actual admin phone number
       const message = `New order received from ${userData.name}, Location: ${userData.location}. Order details: ${JSON.stringify(cartContext.items)}`;
-      await fetch("/api/sendSms", {
+      const response = await fetch("https://textbelt.com/text", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          to: adminPhoneNumber,
-          message,
+          phone: adminPhoneNumber,
+          message: message,
+          key: "textbelt", // Use 'textbelt' for free tier, or replace with your API key
         }),
       });
+      const data = await response.json();
+      if (!data.success) {
+        console.error("Failed to send SMS notification:", data.error);
+      }
     } catch (smsError) {
       console.error("Failed to send SMS notification:", smsError);
     }

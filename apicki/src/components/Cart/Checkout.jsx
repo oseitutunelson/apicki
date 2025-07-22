@@ -143,8 +143,12 @@ const Checkout = (props) => {
   };
 
   const cancelHandler = () => {
-    // Cancel the order and redirect to order page
-    navigate("/order");
+    // Cancel the order and close the modal
+    if (props.onCancel) {
+      props.onCancel();
+    } else {
+      navigate("/order");
+    }
   };
 
   //css classes

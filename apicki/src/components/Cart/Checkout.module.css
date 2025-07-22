@@ -1,8 +1,15 @@
 .checkoutContainer {
   max-width: 550px;
-  margin: -2.5rem auto;
+  margin: -1.5rem auto;
   padding: 1.5rem;
   background-color: #fff;
+}
+
+@media (max-width: 480px) {
+  .checkoutContainer {
+    max-height:50vh;
+    overflow-y: auto;
+  }
 }
 
 .form {

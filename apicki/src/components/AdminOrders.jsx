@@ -6,9 +6,27 @@ const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updatingOrderId, setUpdatingOrderId] = useState(null);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     fetchOrders();
+
+    // Subscribe to new orders
+    const subscription = supabase
+      .channel('orders')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'orders' },
+        (payload) => {
+          setOrders((prevOrders) => [payload.new, ...prevOrders]);
+          setNotification(`New order received from ${payload.new.user_data.name}`);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(subscription);
+    };
   }, []);
 
   const fetchOrders = async () => {
@@ -48,6 +66,12 @@ const AdminOrders = () => {
   return (
     <div className={classes.container}>
       <h1 className={classes.aheader}>Admin Orders Dashboard</h1>
+      {notification && (
+        <div className={classes.notification}>
+          {notification}
+          <button onClick={() => setNotification(null)}>Dismiss</button>
+        </div>
+      )}
       <table className={classes.ordersTable}>
         <thead>
           <tr>
