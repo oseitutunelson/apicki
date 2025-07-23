@@ -1,6 +1,5 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../../supabase";
 import classes from "./Checkout.module.css";
 
 const isEmpty = (value) => value.trim() === "";
@@ -13,18 +12,7 @@ const Checkout = (props) => {
     location: true,
   });
 
-  const [user, setUser] = useState(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-    };
-    getUser();
-  }, []);
 
   const nameInputRef = useRef();
   const numberInputRef = useRef();
@@ -60,7 +48,7 @@ const Checkout = (props) => {
     return new Promise((resolve, reject) => {
       const handler = window.PaystackPop.setup({
         key: "pk_test_f9800366bb98fe935f222d3ac71b3f6036e96632",
-        email: user.email,
+        email: "guest@example.com", // placeholder email since user/email removed
         amount: amount * 100, // Paystack expects amount in kobo
         currency: "GHS",
         channels: ["mobile_money", "card", "bank"],
@@ -88,12 +76,6 @@ const Checkout = (props) => {
 
   const confirmHandler = async (event) => {
     event.preventDefault();
-
-    if (!user) {
-      alert("You must be logged in to place an order.");
-      navigate("/login");
-      return;
-    }
 
     const enteredName = nameInputRef.current.value;
     const enteredNumber = numberInputRef.current.value;

@@ -2,13 +2,22 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../supabase";
 import classes from "./AdminOrders.module.css";
 
-const AdminOrders = () => {
+export default function AdminOrders( ) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updatingOrderId, setUpdatingOrderId] = useState(null);
   const [notification, setNotification] = useState(null);
 
   useEffect(() => {
+    // Request notification permission on mount and handle fallback
+    if (Notification.permission === "default") {
+      Notification.requestPermission((permission) => {
+        if (permission !== "granted") {
+          console.warn("Notification permission not vgranted");
+        }
+      });
+    }
+
     fetchOrders();
 
     // Subscribe to new orders
@@ -20,6 +29,16 @@ const AdminOrders = () => {
         (payload) => {
           setOrders((prevOrders) => [payload.new, ...prevOrders]);
           setNotification(`New order received from ${payload.new.user_data.name}`);
+
+          // Show desktop notification if permission granted
+          if (Notification.permission === "granted") {
+            new Notification("New Order", {
+              body: `New order received from ${payload.new.user_data.name}`,
+              icon: "/favicon.ico",
+            });
+          } else {
+            console.warn("Notification permission not granted, cannot show notification");
+          }
         }
       )
       .subscribe();
@@ -94,7 +113,7 @@ const AdminOrders = () => {
               <td>{order.id}</td>
               <td>
                 <div><strong>Name:</strong> {order.user_data.name}</div>
-                <div><strong>Email:</strong> {order.user_data.email}</div>
+                <div><strong>Contact:</strong> {order.user_data.number}</div>
                 <div><strong>Location:</strong> {order.user_data.location}</div>
               </td>
               <td>
@@ -127,4 +146,3 @@ const AdminOrders = () => {
   );
 };
 
-export default AdminOrders;
