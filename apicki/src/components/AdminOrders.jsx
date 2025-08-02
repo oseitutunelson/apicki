@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../supabase";
 import classes from "./AdminOrders.module.css";
+import AdminMeals from "./AdminMeals";
 
-export default function AdminOrders( ) {
+export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updatingOrderId, setUpdatingOrderId] = useState(null);
@@ -13,7 +14,7 @@ export default function AdminOrders( ) {
     if (Notification.permission === "default") {
       Notification.requestPermission((permission) => {
         if (permission !== "granted") {
-          console.warn("Notification permission not vgranted");
+          console.warn("Notification permission not granted");
         }
       });
     }
@@ -22,10 +23,10 @@ export default function AdminOrders( ) {
 
     // Subscribe to new orders
     const subscription = supabase
-      .channel('orders')
+      .channel("orders")
       .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'orders' },
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "orders" },
         (payload) => {
           setOrders((prevOrders) => [payload.new, ...prevOrders]);
           setNotification(`New order received from ${payload.new.user_data.name}`);
@@ -142,7 +143,8 @@ export default function AdminOrders( ) {
           ))}
         </tbody>
       </table>
+      <hr />
+      <AdminMeals />
     </div>
   );
 };
-

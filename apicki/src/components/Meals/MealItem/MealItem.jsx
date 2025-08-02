@@ -5,14 +5,14 @@ import MealItemForm from "./MealItemForm";
 
 const MealItem = (props) => {
     const cartContext = useContext(CartContext);
-    const price = `₵${props.price.toFixed(2)}`;
+    const price = `₵${(props.price !== undefined ? props.price : 0).toFixed(2)}`;
 
     const addToCartHandler = (amount) => {
         cartContext.additem({
             id: props.id,
             name: props.name,
             amount: amount,
-            price: props.price,
+            price: props.price !== undefined ? props.price : 0,
         });
     };
 
@@ -23,7 +23,11 @@ const MealItem = (props) => {
                 <div className={classes.description}>{props.description}</div>
                 <div className={classes.price}>{price}</div>
             </div>
-            <MealItemForm onAddToCart={addToCartHandler} />
+            {props.available ? (
+                <MealItemForm onAddToCart={addToCartHandler} />
+            ) : (
+                <p style={{ color: "red", fontWeight: "bold" }}>Unavailable</p>
+            )}
         </li>
     );
 };

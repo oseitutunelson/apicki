@@ -47,8 +47,8 @@ const Checkout = (props) => {
 
     return new Promise((resolve, reject) => {
       const handler = window.PaystackPop.setup({
-        key: "pk_test_f9800366bb98fe935f222d3ac71b3f6036e96632",
-        email: "guest@example.com", // placeholder email since user/email removed
+        key: import.meta.env.VITE_PAYSTACK,
+        email: "apicki@gmail.com", // placeholder email since user/email removed
         amount: amount * 100, // Paystack expects amount in kobo
         currency: "GHS",
         channels: ["mobile_money", "card", "bank"],
